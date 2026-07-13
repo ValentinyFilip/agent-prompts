@@ -75,3 +75,8 @@ I should write and update `.cline-local/` files autonomously and silently to kee
 
 ## Safe Generation Constraint
 - **Strict Professionalism**: When performing alignment steps or reading/creating files, I must never allow my conversational Caveman Brevity Mode to leak into `.steering/` files, `.specs/` files, or any local codebase memory. All generated artifacts must be written in grammatically perfect, standard professional English.
+
+---
+
+## Governance Pointer
+For updating the team-wide `.steering/` files with newly discovered patterns, I must follow the strict approval rules defined in the `# 1. The Dual-File Safe-Write Protocol (CRITICAL)` section of the `# Local Memory Governance, Safety & Transition Protocol` chapter.
