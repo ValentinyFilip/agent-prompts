@@ -4,14 +4,13 @@ I must adhere to strict safe-write rules to prevent workspace corruption, resour
 
 ---
 
-## 1. The Dual-File Safe-Write Protocol (CRITICAL)
+## 1. Steering Memory Governance (Delegated to `/steering-manager`)
 I am strictly forbidden from silently or autonomously modifying any file inside `.steering/`. Doing so corrupts our project "constitution" without human verification.
 
 If a finished task or Wave reveals that our long-term memory needs updating (e.g., adding a database table, registering an external connector, or documenting a newly introduced vertical slice pattern):
-1. **Write Original First**: I must write the proposed changes directly into the corresponding `*.original.md` file in clear, grammatically perfect professional English.
-2. **Halt for Review**: Once written, I must halt and instruct the user to inspect the local file changes (e.g., via git diff, in their IDE, or via terminal diff). I must explain the reasoning behind the update and wait for explicit, written approval.
-3. **Generate Caveman Compressed**: Upon receiving written user approval, I will autonomously convert the updated portion into Caveman shorthand and write it to the corresponding `*.md` file (with no further approvals needed for the compressed version).
-4. **Professional Presentation**: While my direct replies inside the chat window use Caveman Brevity Mode, the proposed markdown files inside `*.original.md` and my explanations for why the update is needed must be rendered in professional, standard English so they are clean and readable before you approve the write.
+1. I must invoke: `/steering-manager update <file-path>.original.md` (or `/steering-manager create <type> <name>` for new files).
+2. The `/steering-manager` skill will write the proposed original in professional English and halt to prompt the user to inspect changes via Git diff.
+3. Once approved by the user, the `/steering-manager` skill will automatically generate the Caveman-compressed `*.md` counterpart.
 
 ---
 
@@ -25,7 +24,7 @@ To control costs and ensure project safety, I must operate under these strict en
    - I will prioritize local semantic tools to analyze scope instead of recursively opening files (as governed by `.clinerules/local-tools.md`). This drastically reduces context window inflation and keeps API costs low.
    - When modifying files, I will write precise, surgical edits. I will avoid rewriting entire files if only a few lines need to be changed.
 3. **Dependency Lockdown**:
-   - I am strictly forbidden from installing new external libraries or packages without the user's explicit, written permission. I must prioritize working with the pre-existing dependencies outlined in our technical steering files.
+   - I am strictly forbidden from installing new external libraries or packages (e.g., via `npm install`, `dotnet add package`, etc.) without the user's explicit, written permission. I must prioritize working with the pre-existing dependencies outlined in our technical steering files.
 4. **Atomic Git Checkpoints**:
    - At the completion of each logical Wave of tasks (in Spec Mode) or upon completing the task (in Vibe Mode), I must stop, run `git status` via the terminal, and propose a clean, descriptive local Git commit message to the user.
 
@@ -56,4 +55,4 @@ At each Halt Condition, I must explicitly advise the human on transitioning mode
 
 - **At the End of Phase 3 (Task Planning Approval)**:
   Prompt the human to select an execution model before running code:
-  > 💡 *Task planning approved. Before confirming execution of the first Wave, please choose your backend execution model (like **GPT Luna/Claude Sonnet 5.0** with reasoning set to **medium** or **low**) in your Cline settings.*
+  > 💡 *Task planning approved. Before confirming execution of the first Wave (TDD execution), please choose your backend execution model (like **GPT Luna/Claude Sonnet 5.0** with reasoning set to **medium** or **low**) in your Cline settings.*

@@ -8,7 +8,7 @@ After each reset, I begin completely fresh with zero context. I rely ENTIRELY on
 
 ## The Dual-File Token-Preservation Protocol (CRITICAL)
 
-To prevent context inflation, save context window tokens, and control costs, our project uses a strict Dual-File Memory Architecture. I must handle these files with absolute discipline:
+To prevent context inflation, save context window tokens, and control costs, our project uses a strict Dual-File Memory Architecture managed by the `/steering-manager` skill. I must handle these files with absolute discipline:
 
 ### 1. File Formats: Human vs. Agent
 * **Human-Readable Originals (`*.original.md`)**:
@@ -20,17 +20,19 @@ To prevent context inflation, save context window tokens, and control costs, our
   - *Target*: Strictly for my AI context window.
   - *Constraint*: **I must strictly read only these compressed files during Phase 0 workspace alignment.**
 
-### 2. File Writes: Dual-Phase Generation
-Whenever I am instructed to create or update any project steering file (in `.steering/`) or feature spec file (in `.specs/`), I must strictly follow this two-step generation process:
-1. **Write Human Original**: First, write the update or specification directly into `[filename].original.md` using professional, highly detailed English. Once written, halt and instruct the user to inspect the file (e.g., via git diff, local editor, or terminal diff). I must obtain explicit written approval of the file's contents before proceeding.
-2. **Translate to Caveman**: Once approved, immediately compress the contents of `[filename].original.md` into Caveman shorthand and write it to `[filename].md` (which is what I will load in future sessions to conserve tokens).
+### 2. Delegated Steering Management
+For creating, updating, auditing, or compressing any file inside `.steering/`, I must invoke the `/steering-manager` skill commands:
+- `/steering-manager create <type> <name>`
+- `/steering-manager update <file-path>`
+- `/steering-manager compress <original-file-path>`
+- `/steering-manager audit`
 
 ---
 
 ## Core Memory Directories
 
 ### A. Read-Only Team Steering Files (Shared in `.steering/`)
-These files are committed to Git and serve as our project constitution. They are often named after the specific sub-projects they govern (e.g., `app-core.md`, `app-payments.md`):
+These files are committed to Git and serve as our project constitution. Managed via `/steering-manager`:
 * `[project-name].original.md` (Human) $\rightarrow$ `[project-name].md` (Caveman Shorthand)
 * `[project-name]-tech.original.md` (Human) $\rightarrow$ `[project-name]-tech.md` (Caveman Shorthand)
 * `structure.original.md` (Human) $\rightarrow$ `structure.md` (Caveman Shorthand)
@@ -44,13 +46,8 @@ These files organize the active feature:
 
 ### C. Autonomous Local Context (Local-Only in `.cline-local/` - Git-Ignored)
 My private developer scratchpad. **These files must be written and maintained exclusively in Caveman Shorthand**:
-* **`activeContext.md`**: 
-  - *Format*: Strict Caveman shorthand.
-  - *Purpose*: Tracks my current debugging focus, compiler errors, active files, and variables.
-  - *Usage*: Read at boot to restore state instantly.
-* **`sessionProgress.md`**: 
-  - *Format*: Strict Caveman shorthand.
-  - *Purpose*: Checklist of micro-tasks too small to justify a full `.specs/` folder.
+* **`activeContext.md`**: Tracks my current debugging focus, compiler errors, active files, and variables.
+* **`sessionProgress.md`**: Checklist of micro-tasks too small to justify a full `.specs/` folder.
 
 ---
 
@@ -59,17 +56,17 @@ When my memory resets and a task begins, I must execute these steps in order bef
 1. List only Caveman-compressed files (No `*.original.md`) in the `.steering/` directory.
 2. **Read ONLY the `.md` (Caveman-compressed) files** inside `.steering/` to semantically map our Product, Technical, Structure, and Migration boundaries. Do not read the `*.original.md` files.
 3. Identify **which specific sub-project(s)** the active task targets, and isolate my attention to the guidelines of those target projects.
-4. Check if `.cline-local/activeContext.md` and `.cline-local/sessionProgress.md` exist. If present, **read them immediately** (both are in Caveman shorthand) to restore my active memory of the current debugging state, recent local changes, and outstanding micro-tasks.
+4. Check if `.agent-local/activeContext.md` and `.agent-local/sessionProgress.md` exist. If present, **read them immediately** (both are in Caveman shorthand) to restore my active memory of the current debugging state, recent local changes, and outstanding micro-tasks.
 
 ---
 
 ## Memory Bank Updates
-My local memory bank files (`.cline-local/activeContext.md` and `sessionProgress.md`) must be updated in brief Caveman style:
+My local memory bank files (`.agent-local/activeContext.md` and `sessionProgress.md`) must be updated in brief Caveman style:
 1. After discovering new workspace patterns or compiler quirks.
 2. At the end of **every single turn** where I make changes or discover crucial local insights.
 3. When the user requests to **update memory bank** (I must review all files).
 
-I should write and update `.cline-local/` files autonomously and silently to keep my session memory highly accurate.
+For updating the team-wide `.steering/` files with newly discovered patterns, I must invoke `/steering-manager update <file-path>.original.md`.
 
 ---
 
