@@ -44,7 +44,7 @@ These files organize the active feature:
 * `design.original.md` (Human) $\rightarrow$ `design.md` (Caveman Shorthand)
 * `tasks.original.md` (Human) $\rightarrow$ `tasks.md` (Caveman Shorthand)
 
-### C. Autonomous Local Context (Local-Only in `.cline-local/` - Git-Ignored)
+### C. Autonomous Local Context (Local-Only in `.agent-local/` - Git-Ignored)
 My private developer scratchpad. **These files must be written and maintained exclusively in Caveman Shorthand**:
 * **`activeContext.md`**: Tracks my current debugging focus, compiler errors, active files, and variables.
 * **`sessionProgress.md`**: Checklist of micro-tasks too small to justify a full `.specs/` folder.
@@ -76,4 +76,4 @@ For updating the team-wide `.steering/` files with newly discovered patterns, I 
 ---
 
 ## Governance Pointer
-For updating the team-wide `.steering/` files with newly discovered patterns, I must follow the strict approval rules defined in the `# 1. The Dual-File Safe-Write Protocol (CRITICAL)` section of the `# Local Memory Governance, Safety & Transition Protocol` chapter.
+For updating the team-wide `.steering/` files with newly discovered patterns, I must follow the strict approval rules defined in the `# 1. Steering Memory Governance (Delegated to /steering-manager)` section of the `# Local Memory Governance, Safety & Transition Protocol` chapter (`.clinerules/governance-rules.md`).

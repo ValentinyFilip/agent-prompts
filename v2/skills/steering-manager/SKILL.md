@@ -46,7 +46,7 @@ Rules:
 2. Use a unique lowercase kebab-case `id`. Derive it from scope plus document name, then check all recursively discovered steering IDs for collisions.
 3. Keep `title`, `description`, and `applies_to` as quoted YAML strings.
 4. Keep `tags` as an inline YAML string array. Require at least one non-empty, lowercase kebab-case tag; remove duplicates while preserving order.
-5. Use the actual current local date for `last_updated` in `YYYY-MM-DD` form. Never copy the example placeholder into a generated file.
+5. Use the actual current local date for `last_updated` in `YYYY-MM-DD` form. Never copy an example placeholder into a generated file.
 6. Preserve the six metadata values byte-for-byte between each original and compressed counterpart.
 7. Place one blank line after the closing `---` before document content.
 
@@ -58,7 +58,7 @@ Rules:
 4. Never modify unrelated steering files.
 5. Preserve code, commands, paths, glob patterns, type names, schema names, versions, enum values, numeric constants, URLs, state transitions, warnings, and normative force.
 6. Do not invent project facts. Ask for missing substantive content.
-7. Never leak project-specific examples from another repository. Templates below are deliberately generic.
+7. Never leak project-specific examples from another repository. Templates below are aligned with the workspace steering typology.
 8. Before every write, report the exact absolute target path. After every write, re-read the file and validate it.
 
 ## Pair and Path Conventions
@@ -77,16 +77,21 @@ Normalize command paths as follows:
 - A path without a Markdown suffix identifies a pair base.
 - Reject any other suffix.
 
-For `create`, map type to destination:
+For `create`, map `<type>` to destination base:
 
-| Type argument | Destination base |
-|---|---|
-| `core` | `.steering/core/<name>` |
-| `vision` | `.steering/vision/<name>` |
-| `project/<scope>` | `.steering/projects/<scope>/<name>` |
-| `service/<scope>` | `.steering/services/<scope>/<name>` |
+| Type argument | Destination base | Purpose |
+|---|---|---|
+| `product` | `.steering/product` | Global product scope, business domains, feature catalog |
+| `tech` | `.steering/tech` | Global tech stack, frameworks, runtimes & build commands |
+| `structure` | `.steering/structure` | Monorepo layout, solution projects & directory conventions |
+| `architecture` | `.steering/architecture` | Global system architecture, system diagram & data strategy |
+| `vision` | `.steering/vision` | Target future state, migration stages & deprecation rules |
+| `project/<scope>` | `.steering/projects/<scope>/<scope>` | Sub-project domain rules, lifecycle, jobs & feature slices |
+| `project-architecture/<scope>` | `.steering/projects/<scope>/<scope>-architecture` | Deep-dive architectural design for a specific sub-project |
+| `project-tech/<scope>` | `.steering/projects/<scope>/<scope>-tech` | Tech stack & configuration specifics for a sub-project |
+| `external/<scope>` or `glossary/<scope>` | `.steering/externals/<scope>/<scope>-glossary` | External service integration, raw DB schemas & API contracts |
 
-`<scope>` and `<name>` must be kebab-case path segments. Neither may be empty, `.`, `..`, absolute, or contain a slash beyond the single type separator. Refuse creation if either target exists; direct the user to `update` instead.
+`<scope>` and `<name>` must be kebab-case path segments. Refuse creation if either target exists; direct the user to `update` instead.
 
 ## Compression Standard (Delegated to `/caveman-compress`)
 
@@ -111,80 +116,125 @@ When creating or updating the compressed counterpart `<base>.md`, invoke the ext
 7. Re-read both files. Validate metadata equality, pair naming, factual equivalence, and absence of template placeholders.
 8. Report both absolute paths and a concise validation result.
 
-### Type templates
+---
 
-Choose the closest template; omit irrelevant sections and add project-supported sections when needed.
+### Type Templates
 
-**`core`**
+Choose the matching template; omit irrelevant sections and add project-supported sections when needed.
 
+#### 1. `product`
 ```markdown
 <six-field frontmatter>
 
-# <Title>
+# Product: <Product / Platform Name>
 
-## Purpose
-## Product and Domain Boundaries
-## Repository Structure
-## Technology and Tooling
-## Cross-Cutting Conventions
-## Testing and Verification
-## Build and Common Commands
-## Non-Negotiable Rules
+## Overview & Business Context
+## Core Operational Domains
+## External System Boundaries
+## Key Workflows & User Personas
+## Non-Negotiable Business Rules
 ```
 
-**`project/<scope>`**
-
+#### 2. `tech`
 ```markdown
 <six-field frontmatter>
 
-# <Title>
+# Tech Stack
+
+## Backend (.NET / Core Technologies)
+## Frontend (TypeScript / Frameworks)
+## Database & Persistence
+## Infrastructure & Messaging
+## Testing Frameworks & Tooling
+## Build & Common Commands
+```
+
+#### 3. `structure`
+```markdown
+<six-field frontmatter>
+
+# Project Structure
+
+## Repository Root
+## Backend Projects & Solution Membership
+## Feature Structure & Slice Patterns
+## Infrastructure & Shared Core Layout
+## Frontend Monorepo Structure
+## Key Directory & Naming Conventions
+```
+
+#### 4. `architecture`
+```markdown
+<six-field frontmatter>
+
+# System Architecture
+
+## System Overview & Style
+## High-Level Architecture Diagram
+## Service Inventory & Ports
+## Service Communication Patterns
+## Data Architecture & DbContext Strategy
+## Cross-Cutting Concerns (Auth, Jobs, Logs)
+## Deployment & Infrastructure Strategy
+```
+
+#### 5. `project/<scope>` (Sub-Project Steering)
+```markdown
+<six-field frontmatter>
+
+# <Project Scope> — Project Steering Rules
 
 ## Purpose
-## Scope and Ownership
 ## Project Layout
-## Domain Model and Lifecycles
-## Interfaces and Dependencies
-## Data and Persistence
-## Configuration
-## Testing
-## Conventions and Rules
+## Key Domain Concepts & Lifecycles
+## Data Sources & DbContext Usage
+## Background Jobs & Scheduler
+## External Connectors & Configurations
+## Conventions & Known Constraints
 ```
 
-**`service/<scope>`**
-
+#### 6. `project-architecture/<scope>` (Sub-Project Architecture)
 ```markdown
 <six-field frontmatter>
 
-# <Title>
+# <Project Scope> — Architecture Document
 
-## Responsibility
-## Service Boundary
-## API or Message Contracts
-## Processing and State Transitions
-## Persistence
-## External Integrations
-## Reliability and Security
-## Operations and Observability
-## Testing
-## Rules and Known Constraints
+## System Purpose
+## Core Domain Model & Lifecycles
+## State Machine Architecture
+## Execution Pipelines
+## Integration Architecture
+## Technical Debt & Refactoring Roadmap
 ```
 
-**`vision`**
-
+#### 7. `external/<scope>` or `glossary/<scope>` (External Schema / Integration)
 ```markdown
 <six-field frontmatter>
 
-# <Title>
+# <Service Name> Glossary — Raw SQL & Integration Reference
 
-## Vision
-## Current State
-## Target State
-## Architectural Principles
-## Migration Stages
-## Compatibility and Deprecation Policy
-## Success Measures
-## Risks and Guardrails
+## Access Pattern & Connection Contexts
+## Czech -> English Vocabulary / Term Mapping
+## Table Reference & Schema Layout
+## Canonical Join Patterns
+## Query Conventions & Magic Values
+## Repository Mapping
 ```
+
+#### 8. `vision`
+```markdown
+<six-field frontmatter>
+
+# Architectural Vision & Migration Plan
+
+## Vision & Objectives
+## Current State vs Target State
+## Migration Stages & Roadmap
+## Compatibility & Deprecation Policy
+## Success Criteria & Guardrails
+```
+
+---
 
 ## `/steering-manager update <file-path>`
 
@@ -225,16 +275,7 @@ Audit recursively and make no changes.
 5. Compare pair metadata for exact equality.
 6. Mark a pair out of sync when any original technical fact is missing or contradicted in the compressed file. Also flag a counterpart with an older modification time than its original as a stale candidate requiring semantic comparison; modification time alone is not proof of factual drift.
 7. Detect unexpanded placeholders and project-specific leakage from template examples.
-8. Return a table:
-
-```text
-Status | Original | Counterpart | Findings
-PASS   | ...      | ...         | —
-FAIL   | ...      | ...         | missing field: tags; counterpart absent
-WARN   | ...      | ...         | counterpart older; semantic comparison passes
-```
-
-Finish with counts for pairs, passes, warnings, failures, orphan originals, orphan counterparts, metadata errors, and out-of-sync pairs. Exit/report failure when any `FAIL` exists. Do not repair during audit; recommend the exact `update` or `compress` command.
+8. Return an audit table summarizing status: PASS, FAIL, or WARN.
 
 ## `/steering-manager compress <original-file-path>`
 
@@ -243,74 +284,11 @@ Finish with counts for pairs, passes, warnings, failures, orphan originals, orph
 3. Execute `/caveman-compress <original-file-path>`.
 4. Report absolute counterpart path and compression status.
 
-`compress` is an explicit refresh command and may replace the counterpart without the two-stage update halt. It must never modify the original.
-
-## Project-Agnostic Few-Shot Examples
-
-These examples demonstrate form and compression only. Never copy placeholder facts into a real project.
-
-### Example 1: project original
-
-```markdown
 ---
-id: "project-orders-api"
-title: "Orders API Steering Rules"
-description: "Defines the boundaries, architecture, and implementation rules for the orders API."
-applies_to: "src/MySystem.Api/Orders/**"
-tags: ["orders", "api", "backend"]
-last_updated: "2026-07-30"
----
-
-# Orders API Steering Rules
-
-## Purpose
-
-`MySystem.Api` owns order creation and status queries. It delegates facility synchronization to `ExternalCAFM` and must not write to that system's database directly.
-
-## Project Layout
-
-Commands and queries are organized as vertical slices under `Features/<FeatureName>/`. Each slice keeps its endpoint, request, response, validator, and handler together.
-
-## Rules
-
-- New HTTP operations must use the existing endpoint framework; controllers are prohibited.
-- External calls must use the registered resilient client and propagate cancellation tokens.
-- The legacy `Features/Proccessing/` spelling is persisted in deployment scripts and must not be renamed.
-```
-
-### Example 1: compressed counterpart
-
-```markdown
----
-id: "project-orders-api"
-title: "Orders API Steering Rules"
-description: "Defines the boundaries, architecture, and implementation rules for the orders API."
-applies_to: "src/MySystem.Api/Orders/**"
-tags: ["orders", "api", "backend"]
-last_updated: "2026-07-30"
----
-
-# Orders API Steering Rules
-
-## Purpose
-
-`MySystem.Api` owns order creation + status queries; facility sync -> `ExternalCAFM`; NEVER direct-write external DB.
-
-## Layout
-
-Vertical slices: `Features/<FeatureName>/` -> endpoint + request + response + validator + handler.
-
-## Rules
-
-- New HTTP ops MUST use existing endpoint framework; NO controllers.
-- External calls MUST use registered resilient client + propagate cancellation tokens.
-- Preserve legacy `Features/Proccessing/` spelling (deployment dependency); NO rename.
-```
 
 ## Completion Checklist
 
 Before declaring any command complete, verify:
-
 - operation stayed inside `.steering/` or `.specs/`;
 - no unrelated file changed;
 - pair names are correct;
@@ -318,5 +296,4 @@ Before declaring any command complete, verify:
 - metadata matches across the pair;
 - original uses professional English;
 - compressed file preserves every technical fact and normative constraint;
-- no foreign project names or unresolved placeholders leaked into generated output;
 - written files were re-read successfully.
