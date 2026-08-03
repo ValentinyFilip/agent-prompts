@@ -14,14 +14,38 @@ Treat `.steering/` as a project constitution. Never infer permission to overwrit
 
 ## Command Dispatch
 
-Parse the first argument as one of these commands:
+Parse the first argument as the command. Use these canonical forms:
 
 ```text
-/steering-manager create <type> <name>
+/steering-manager create <global-type>
+/steering-manager create <scoped-type>/<scope>
 /steering-manager update <file-path>
 /steering-manager audit
 /steering-manager compress <original-file-path>
 ```
+
+Supported create types:
+
+```text
+Global types: product | tech | structure | architecture | vision
+Scoped types: project | project-architecture | project-tech | external | glossary
+```
+
+For backward compatibility, also accept the two-argument scoped form:
+
+```text
+/steering-manager create <scoped-type> <scope>
+```
+
+Normalize it to `<scoped-type>/<scope>` before resolving the destination. For example, `create project itixo-component-library-tables` and `create project/itixo-component-library-tables` are identical requests.
+
+Create parsing is deterministic:
+
+1. After `create`, accept exactly one global-type token, exactly one `<scoped-type>/<scope>` token, or exactly two tokens consisting of `<scoped-type> <scope>`.
+2. Split a canonical scoped token at its single `/`. Require a supported scoped type before the slash and one non-empty kebab-case scope segment after it.
+3. Normalize the two-argument scoped form to the same `{ type, scope }` values as the slash form.
+4. Resolve `{ type, scope }` only through the create mapping table below. Never treat a type token, scope token, or combined scoped token as a destination path or filename.
+5. Reject a global type with a scope, a scoped type without a scope, unknown types, extra arguments, multiple slashes, absolute paths, separators inside the scope, `.` or `..`, and non-kebab-case scopes.
 
 If arguments are missing or invalid, show the valid syntax and request only the missing value. Do not begin a write with unresolved ambiguity.
 
@@ -77,7 +101,7 @@ Normalize command paths as follows:
 - A path without a Markdown suffix identifies a pair base.
 - Reject any other suffix.
 
-For `create`, map `<type>` to destination base:
+For `create`, resolve the normalized type and scope to exactly one destination base:
 
 | Type argument | Destination base | Purpose |
 |---|---|---|
@@ -91,7 +115,32 @@ For `create`, map `<type>` to destination base:
 | `project-tech/<scope>` | `.steering/projects/<scope>/<scope>-tech` | Tech stack & configuration specifics for a sub-project |
 | `external/<scope>` or `glossary/<scope>` | `.steering/externals/<scope>/<scope>-glossary` | External service integration, raw DB schemas & API contracts |
 
-`<scope>` and `<name>` must be kebab-case path segments. Refuse creation if either target exists; direct the user to `update` instead.
+The mapping table is authoritative. In particular, `project/<scope>` always uses `<scope>` as both the directory name and filename. Never create `.steering/projects/<scope>.original.md`, `.steering/projects/<scope>.md`, `.steering/projects/<scope>/project.original.md`, or `.steering/projects/<scope>/project.md`.
+
+Examples:
+
+```text
+/steering-manager create project/itixo-component-library-tables
+  -> .steering/projects/itixo-component-library-tables/itixo-component-library-tables.original.md
+  -> .steering/projects/itixo-component-library-tables/itixo-component-library-tables.md
+
+/steering-manager create project-architecture/itixo-component-library-tables
+  -> .steering/projects/itixo-component-library-tables/itixo-component-library-tables-architecture.original.md
+  -> .steering/projects/itixo-component-library-tables/itixo-component-library-tables-architecture.md
+
+/steering-manager create project-tech/itixo-component-library-tables
+  -> .steering/projects/itixo-component-library-tables/itixo-component-library-tables-tech.original.md
+  -> .steering/projects/itixo-component-library-tables/itixo-component-library-tables-tech.md
+
+/steering-manager create external/acme-billing
+/steering-manager create glossary/acme-billing
+  -> .steering/externals/acme-billing/acme-billing-glossary.original.md
+  -> .steering/externals/acme-billing/acme-billing-glossary.md
+```
+
+Before writing, substitute the normalized scope into the selected destination base and display the resolved absolute original and compressed paths. Verify that neither resolved filename is the literal generic name `project.original.md` or `project.md`.
+
+`<scope>` must be one lowercase kebab-case path segment. Refuse creation if either target exists; direct the user to `update` instead.
 
 ## Compression Standard (Delegated to `/caveman-compress`)
 
@@ -101,20 +150,21 @@ When creating or updating the compressed counterpart `<base>.md`, invoke the ext
 2. Ensure the six-field frontmatter header is preserved exactly byte-for-byte.
 3. Ensure the output is written to `<base>.md`.
 
-## `/steering-manager create <type> <name>`
+## `/steering-manager create <global-type>` or `create <scoped-type>/<scope>`
 
-1. Validate type, scope, name, destination containment, nonexistence, and ID uniqueness.
-2. Prompt for these metadata values if the user has not already supplied them:
+1. Parse and normalize the create arguments using Command Dispatch, then resolve the destination base exclusively through the create mapping table.
+2. Validate type, required scope, destination containment, nonexistence, and ID uniqueness. For a project-scoped type, confirm that the resolved directory and filename stem both contain the normalized scope as prescribed by the table.
+3. Prompt for these metadata values if the user has not already supplied them:
    - `title`
    - `description`
    - `applies_to`
    - `tags`
-3. Ask for the substantive steering facts required by the chosen template. Reuse facts already supplied in the conversation; do not ask twice.
-4. Set `last_updated` to the current date.
-5. Write `<base>.original.md` in polished professional English.
-6. Run `/caveman-compress <base>.original.md` to generate `<base>.md`.
-7. Re-read both files. Validate metadata equality, pair naming, factual equivalence, and absence of template placeholders.
-8. Report both absolute paths and a concise validation result.
+4. Ask for the substantive steering facts required by the chosen template. Reuse facts already supplied in the conversation; do not ask twice.
+5. Set `last_updated` to the current date.
+6. Write `<base>.original.md` in polished professional English.
+7. Run `/caveman-compress <base>.original.md` to generate `<base>.md`.
+8. Re-read both files. Validate metadata equality, canonical pair naming, factual equivalence, and absence of template placeholders.
+9. Report both absolute paths and a concise validation result.
 
 ---
 
@@ -207,7 +257,21 @@ Choose the matching template; omit irrelevant sections and add project-supported
 ## Technical Debt & Refactoring Roadmap
 ```
 
-#### 7. `external/<scope>` or `glossary/<scope>` (External Schema / Integration)
+#### 7. `project-tech/<scope>` (Sub-Project Technical Standards)
+```markdown
+<six-field frontmatter>
+
+# <Project Scope> — Technical Standards
+
+## Runtime and Frameworks
+## Project Dependencies
+## Configuration and Environment
+## Build and Test Commands
+## Persistence and Integration Technologies
+## Project-Specific Engineering Constraints
+```
+
+#### 8. `external/<scope>` or `glossary/<scope>` (External Schema / Integration)
 ```markdown
 <six-field frontmatter>
 
@@ -221,7 +285,7 @@ Choose the matching template; omit irrelevant sections and add project-supported
 ## Repository Mapping
 ```
 
-#### 8. `vision`
+#### 9. `vision`
 ```markdown
 <six-field frontmatter>
 
@@ -259,7 +323,7 @@ This command uses the Safe-Write Protocol. Approval cannot be assumed from the u
 
 ## `/steering-manager audit`
 
-Audit recursively and make no changes.
+Audit recursively and make no changes. Audit is report-only: never rename, move, copy, delete, or rewrite a file while auditing.
 
 1. Enumerate `.steering/**/*.original.md` and `.steering/**/*.md`.
 2. For each file, parse frontmatter and verify:
@@ -275,7 +339,13 @@ Audit recursively and make no changes.
 5. Compare pair metadata for exact equality.
 6. Mark a pair out of sync when any original technical fact is missing or contradicted in the compressed file. Also flag a counterpart with an older modification time than its original as a stale candidate requiring semantic comparison; modification time alone is not proof of factual drift.
 7. Detect unexpanded placeholders and project-specific leakage from template examples.
-8. Return an audit table summarizing status: PASS, FAIL, or WARN.
+8. Flag each of these noncanonical project layouts as `FAIL`:
+   - `.steering/projects/<scope>.original.md`
+   - `.steering/projects/<scope>.md`
+   - `.steering/projects/<scope>/project.original.md`
+   - `.steering/projects/<scope>/project.md`
+9. For every noncanonical project file, report its current path and the canonical destination derived from the mapping table. State that migration requires explicit user approval. Do not infer migration approval from the audit request and do not perform the migration during audit.
+10. Return an audit table summarizing status: PASS, FAIL, or WARN.
 
 ## `/steering-manager compress <original-file-path>`
 
@@ -291,7 +361,8 @@ Audit recursively and make no changes.
 Before declaring any command complete, verify:
 - operation stayed inside `.steering/` or `.specs/`;
 - no unrelated file changed;
-- pair names are correct;
+- pair names are correct and follow the canonical mapping table;
+- project steering never uses `project.original.md` or `project.md` as generic filenames;
 - frontmatter has exactly six ordered fields;
 - metadata matches across the pair;
 - original uses professional English;
