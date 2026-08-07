@@ -96,8 +96,8 @@ Rules:
 
 ## Global Safety Rules
 
-1. Resolve the project root before acting. Operate only inside its `.steering/` directory.
-2. Reject paths that escape `.steering/`, including traversal and resolved symlink/junction escapes.
+1. Resolve the project root before acting. Run `create`, `update`, and `audit` only inside its `.steering/` directory. Allow `compress` inside `.steering/` or `.specs/`.
+2. Reject paths that escape the permitted directory, including traversal and resolved symlink/junction escapes.
 3. Read all existing `.steering/**/*.original.md` and `.steering/**/*.md` needed for collision, pairing, style, and scope checks before writing.
 4. Never modify unrelated steering files.
 5. Preserve code, commands, paths, glob patterns, type names, schema names, versions, enum values, numeric constants, URLs, state transitions, warnings, and normative force.
@@ -162,13 +162,61 @@ Before writing, substitute the normalized scope into the selected destination ba
 
 `<scope>` must be one lowercase kebab-case path segment. Refuse creation if either target exists; direct the user to `update` instead.
 
-## Compression Standard (Delegated to `/caveman-compress`)
+## Built-In Compression Standard
 
-When creating or updating the compressed counterpart `<base>.md`, invoke the external `/caveman-compress` skill on the original file:
+The Steering Manager must compress each original itself. Do not invoke another skill, script, service, or command for compression.
 
-1. Execute `/caveman-compress <base>.original.md`.
-2. Ensure the six-field frontmatter header is preserved exactly byte-for-byte.
-3. Ensure the output is written to `<base>.md`.
+For a source named `<base>.original.md`, write the compressed counterpart to `<base>.md`.
+
+### File safety
+
+1. Read `<base>.original.md` without modifying it.
+2. Remove only the final `.original` segment to derive `<base>.md`.
+3. Never overwrite, rename, move, or delete the original.
+4. Never create `<base>.original.original.md` or another backup file.
+5. On `create`, require both pair paths to be absent before writing either file.
+6. On approved `update` or explicit `compress`, replace only the compressed counterpart.
+7. If compression or validation fails, leave the original and any existing counterpart unchanged.
+
+### Exact preservation
+
+Copy these items exactly:
+
+- the complete six-field frontmatter block, including field order, quoting, values, and delimiters.
+- all Markdown headings and their hierarchy.
+- fenced and indented code blocks, including spacing and comments.
+- inline code and its backticks.
+- URLs, Markdown link destinations, file paths, commands, identifiers, configuration keys, API endpoints, and environment variables.
+- product names, proper nouns, dates, versions, numeric values, units, quoted errors, and log messages.
+- list nesting, table structure, diagrams, and meaningful document order.
+
+Place one blank line after the closing frontmatter delimiter.
+
+### Caveman transformation
+
+Compress only natural-language prose outside protected content:
+
+1. Remove articles when meaning remains clear.
+2. Remove filler, pleasantries, hedging, repetition, and connective fluff.
+3. Replace long phrases with short, common equivalents.
+4. Use concise fragments when they preserve the exact meaning.
+5. Merge duplicate statements only when no fact, condition, exception, or emphasis is lost.
+6. Preserve every requirement, prohibition, permission, condition, exception, dependency, rationale, example, and scope boundary.
+7. Preserve normative force. Keep `MUST`, `SHALL`, `MUST NOT`, `SHALL NOT`, `SHOULD`, and `MAY` semantically distinct.
+8. When examples express different behavior, keep at least one example. If an example is factually redundant, you may remove it.
+9. Do not add facts, advice, interpretation, or assumptions.
+
+### Validation before write
+
+Before writing `<base>.md`, compare the candidate against the original:
+
+1. Make sure that the original remains byte-for-byte unchanged.
+2. Make sure that frontmatter is byte-for-byte identical.
+3. Make sure that all protected content is unchanged.
+4. Make sure that every technical fact and normative constraint remains present and uncontradicted.
+5. Make sure that the destination is the canonical sibling `<base>.md`.
+6. Write the counterpart only after all checks pass.
+7. Re-read both files and repeat the metadata and semantic checks.
 
 ## `/steering-manager create <global-type>` or `create <scoped-type>/<scope>`
 
@@ -182,7 +230,7 @@ When creating or updating the compressed counterpart `<base>.md`, invoke the ext
 4. Ask for the substantive steering facts required by the chosen template. Reuse facts already supplied in the conversation; do not ask twice.
 5. Set `last_updated` to the current date.
 6. Write `<base>.original.md` with the Language Standard in this skill.
-7. Run `/caveman-compress <base>.original.md` to generate `<base>.md`.
+7. Apply the Built-In Compression Standard to generate `<base>.md`.
 8. Re-read both files. Validate metadata equality, canonical pair naming, factual equivalence, and absence of template placeholders.
 9. Report both absolute paths and a concise validation result.
 
@@ -336,7 +384,7 @@ This command uses the Safe-Write Protocol. Approval cannot be assumed from the u
 ### Stage 2: after explicit approval
 
 1. Confirm approval refers to the proposed original.
-2. Execute `/caveman-compress <base>.original.md` to refresh `<base>.md`.
+2. Apply the Built-In Compression Standard to refresh `<base>.md`.
 3. Copy all six frontmatter values exactly from the original.
 4. Re-read and validate the pair.
 5. Report the counterpart path and validation result.
@@ -371,8 +419,9 @@ Audit recursively and make no changes. Audit is report-only: never rename, move,
 
 1. Require an existing `*.original.md` path inside `.steering/` or `.specs/`.
 2. Validate frontmatter metadata.
-3. Execute `/caveman-compress <original-file-path>`.
-4. Report absolute counterpart path and compression status.
+3. Derive the canonical counterpart by removing only the final `.original` segment.
+4. Apply the Built-In Compression Standard without modifying the original.
+5. Report the absolute counterpart path and compression status.
 
 ---
 
