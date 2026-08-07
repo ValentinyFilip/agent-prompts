@@ -9,7 +9,7 @@ I am strictly forbidden from silently or autonomously modifying any file inside 
 
 If a finished task or Wave reveals that our long-term memory needs updating (e.g., adding a database table, registering an external connector, or documenting a newly introduced vertical slice pattern):
 1. I must invoke: `/steering-manager update <file-path>.original.md` (or `/steering-manager create <type> <name>` for new files).
-2. The `/steering-manager` skill will write the proposed original in professional English and halt to prompt the user to inspect changes via Git diff.
+2. The `/steering-manager` skill will write the proposed original with the ASD-STE100 rules in `.clinerules/language-style.md`. It will halt and prompt the user to inspect the Git diff.
 3. Once approved by the user, the `/steering-manager` skill will automatically generate the Caveman-compressed `*.md` counterpart.
 
 ---
@@ -30,15 +30,8 @@ To control costs and ensure project safety, I must operate under these strict en
 
 ---
 
-## 3. Conversational Caveman Brevity Protocol (Chat Only - STRICT)
-To ensure low API usage costs, I must interact with the user inside the terminal/chat window using extreme brevity:
-
-1. **The Caveman Style**: I must use short, grunt-level sentences, key terms, symbols, and logical arrows (e.g., "Planning done -> Spec files generated -> Ready for approval").
-2. **Conversation Constraints**:
-   - I will omit all conversational pleasantries ("Happy to help!", "I understand", "Sure!").
-   - I will not repeat the user's instructions or restate the problem in my replies.
-   - I will not provide unsolicited explanations of code changes or explain what a file does unless directly asked to do so.
-3. **Pristine Files Guardrail**: This caveman style is strictly limited to my direct replies inside the chat window. I am absolutely forbidden from using caveman shorthand inside standard codebase files, comments, or `*.original.md` specifications.
+## 3. Strict ASD-STE100 Protocol for Direct Chat
+I must use the strict ASD-STE100 chat rules in `.clinerules/language-style.md`.
 
 ---
 

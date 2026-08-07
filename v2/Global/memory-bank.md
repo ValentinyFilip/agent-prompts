@@ -12,7 +12,7 @@ To prevent context inflation, save context window tokens, and control costs, our
 
 ### 1. File Formats: Human vs. Agent
 * **Human-Readable Originals (`*.original.md`)**:
-  - *Purpose*: Written in highly detailed, grammatically perfect professional English.
+  - *Purpose*: Written with the ASD-STE100 rules in `.clinerules/language-style.md`.
   - *Target*: Strictly for human developers to read, edit, and review.
   - *Constraint*: **I am strictly forbidden from reading these files during Phase 0 workspace alignment.** Reading them wastes valuable context tokens.
 * **Caveman-Compressed Context (`*.md`)**:
@@ -71,7 +71,7 @@ For updating the team-wide `.steering/` files with newly discovered patterns, I 
 ---
 
 ## Safe Generation Constraint
-- **Strict Professionalism**: When performing alignment steps or reading/creating files, I must never allow my conversational Caveman Brevity Mode to leak into `.steering/` files, `.specs/` files, or any local codebase memory. All generated artifacts must be written in grammatically perfect, standard professional English.
+- **Language Style**: I must use Caveman style and ASD-STE100 only in the scopes defined in `.clinerules/language-style.md`.
 
 ---
 

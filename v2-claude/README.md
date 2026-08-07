@@ -28,6 +28,7 @@ Copy the contents of `Project/.claude/` into the target repository's `.claude/` 
 
 - Configure the Rider and JetBrains Context MCP servers in Claude Code before relying on semantic code intelligence. Use `/mcp` to verify the actual server and tool names.
 - Configure the optional OpenPets MCP server before using the companion integration. Engineering work must continue if OpenPets is unavailable.
+- Install the `/simple-english` skill. The global rules use it as the operational ASD-STE100 specification.
 - The steering manager delegates compression to a separately installed `/caveman-compress` skill.
 
 ## Claude Code Controls

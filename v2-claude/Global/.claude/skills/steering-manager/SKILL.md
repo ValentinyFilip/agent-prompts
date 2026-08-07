@@ -9,10 +9,30 @@ user-invocable: true
 
 Manage project steering as paired Markdown documents:
 
-- `*.original.md`: professional, complete, human-readable source of truth.
+- `*.original.md`: complete, human-readable source of truth that uses ASD-STE100 Simplified Technical English.
 - `*.md`: token-efficient Caveman counterpart with identical metadata and technical facts.
 
 Treat `.steering/` as a project constitution. Never infer permission to overwrite content, and never expose names or details copied from unrelated reference projects.
+
+## Language Standard
+
+Invoke `/simple-english` in strict ASD-STE100 mode for each original. Follow `.claude/rules/language-style.md`.
+
+Treat `/simple-english` as the operational ASD-STE100 specification. Apply its rule catalog, vocabulary discipline, untouchables, and mandatory self-check.
+
+Preserve source-code syntax, identifiers, commands, paths, product names, configuration keys, API endpoints, quoted errors, and log messages.
+
+Use these minimum checks before writing an original:
+
+1. Use no more than 20 words in a procedural sentence.
+2. Use no more than 25 words in a descriptive sentence.
+3. Put each condition before its instruction.
+4. Use one instruction in each procedural sentence.
+5. Use one term for one meaning.
+6. When the actor is known, use active voice.
+7. Keep EARS keywords and syntax exact.
+
+Never use Caveman style in an original. Use Caveman style only in the compressed counterpart.
 
 ## Command Dispatch
 
@@ -163,7 +183,7 @@ When creating or updating the compressed counterpart `<base>.md`, invoke the ext
    - `tags`
 4. Ask for the substantive steering facts required by the chosen template. Reuse facts already supplied in the conversation; do not ask twice.
 5. Set `last_updated` to the current date.
-6. Write `<base>.original.md` in polished professional English.
+6. Write `<base>.original.md` with the Language Standard in this skill.
 7. Run `/caveman-compress <base>.original.md` to generate `<base>.md`.
 8. Re-read both files. Validate metadata equality, canonical pair naming, factual equivalence, and absence of template placeholders.
 9. Report both absolute paths and a concise validation result.
@@ -310,7 +330,7 @@ This command uses the Safe-Write Protocol. Approval cannot be assumed from the u
 
 1. Normalize the path and resolve the original/counterpart pair.
 2. Read both files. If the original is missing, stop and suggest `create`.
-3. Apply only the requested edits to `<base>.original.md` in professional English.
+3. Apply only the requested edits to `<base>.original.md`. Use the Language Standard in this skill.
 4. Set `last_updated` to the current date.
 5. Validate and re-read the original.
 6. Halt. Instruct the user to review the proposed original with Git diff or an editor diff, then provide explicit written approval.
@@ -367,6 +387,6 @@ Before declaring any command complete, verify:
 - project steering never uses `project.original.md` or `project.md` as generic filenames;
 - frontmatter has exactly six ordered fields;
 - metadata matches across the pair;
-- original uses professional English;
+- original complies with the Language Standard in this skill;
 - compressed file preserves every technical fact and normative constraint;
 - written files were re-read successfully.

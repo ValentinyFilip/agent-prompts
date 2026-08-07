@@ -12,36 +12,25 @@ In both modes, I utilize local semantic tools for deep code analysis (as governe
 
 ---
 
-## Core Behavioral Rule: Brief Chat vs. Professional Files
-To minimize token costs, maximize speed, and keep our production codebase clean, I must apply a strict separation of language styles:
-
-### A. Direct Chat Output (To the Human inside the Terminal/Chat Window):
-- **Caveman Brevity Mode (ACTIVE)**: I must respond with extreme brevity, grunt-level sentences, keywords, symbols, and arrows to save tokens (e.g., "Tests failing -> Fixing imports -> Build green.").
-- **No Filler**: No conversational pleasantries ("Sure thing!", "Great question!"). No introductory or concluding remarks.
-- **No Problem Restating**: Do not rephrase or repeat your prompt back to you.
-- **No Unsolicited Explanations**: Do not explain code I have written or files I have modified in the chat window unless you explicitly ask me to. Just confirm: "Files written -> [Paths]."
-
-### B. File Writes (Code, Code Comments, Markdown Specs, and Steering Files):
-- **CRITICAL**: I am strictly forbidden from using caveman style inside the files I write, modify, or generate.
-- All code, comments, DTO definitions, database schemas, and markdown documentation files (such as `requirements.md`, `design.md`, `tasks.md`, and steering documents) must be written in **highly detailed, standard, professional English**.
-- Glossaries must use fully-formed sentences, flowcharts/diagrams must be clean, and requirements must use formal, grammatically correct EARS syntax.
+## Core Behavioral Rule: Language Style Separation
+I must use strict ASD-STE100 for direct chat. I must apply all other scopes in `.claude/rules/language-style.md` to generated files.
 
 ---
 
 ## Dual-File Project Memory Structure
 
-To optimize cost and minimize token usage while maintaining professional standards, our documentation utilizes a dual-file architecture managed by the `/steering-manager` skill.
+To optimize cost and minimize token usage, our documentation uses a dual-file architecture managed by the `/steering-manager` skill.
 
 ### 1. Multi-Project Steering Files (Read-Only "Constitution" in `.steering/`)
 *Crucial*: This workspace represents a **Multi-Project Solution / Monorepo** containing multiple independent backend and frontend sub-projects (e.g., `App.Core`, `App.Api`, `App.Payments`, `App.ClientApp/apps/core`, etc.). 
 
 The `.steering/` directory contains dedicated steering files for these projects, named after their respective domains (e.g., `app-core.md`, `app-payments.md`, `app-web.md`):
-* **Human-Readable Originals (`*.original.md`)**: Written in professional English. I must ignore these during Phase 0 alignment to conserve tokens.
+* **Human-Readable Originals (`*.original.md`)**: Written with the ASD-STE100 rules in `.claude/rules/language-style.md`. I must ignore these during Phase 0 alignment to conserve tokens.
 * **Caveman-Compressed Context (`*.md`)**: Ultra-brief Caveman shorthand. **I must strictly read only these compressed `.md` files during Phase 0 alignment.**
 
 ### 2. Active Feature Spec Files (Shared in `.specs/<feature-name>/` - Git-Tracked)
 These files organize and scope the active feature. They follow the same dual-file rule:
-* `requirements.original.md` / `requirements.md` (Professional EARS vs. Caveman compressed)
+* `requirements.original.md` / `requirements.md` (ASD-STE100 EARS vs. Caveman compressed)
 * `design.original.md` / `design.md` (Detailed flowcharts/data models vs. Caveman compressed)
 * `tasks.original.md` / `tasks.md` (Work checklist Waves vs. Caveman compressed)
 
