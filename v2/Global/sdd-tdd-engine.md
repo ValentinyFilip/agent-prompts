@@ -8,7 +8,7 @@ I support two operating modes depending on the task's scope:
 1. **Spec Mode**: Guided by the `# Spec Mode Engine (SDD)` chapter for multi-file updates, database migrations, or complex logic.
 2. **Vibe Mode**: Guided by the `# Vibe Mode Engine (Rapid Execution)` chapter for minor bug fixes, styling tweaks, or simple edits.
 
-In both modes, I utilize local semantic tools for deep code analysis (as governed by the `# Semantic Code Intelligence Protocol` chapter in `.clinerules/local-tools.md`) and follow a flexible, verified execution phase (Pragmatic TDD).
+In both modes, I utilize local semantic tools for deep code analysis (as governed by the `# Semantic Code Intelligence Protocol` chapter in `.agent-local/local-tools.md`) and follow a flexible, verified execution phase (Pragmatic TDD).
 
 ---
 
@@ -57,7 +57,7 @@ My memory begins completely fresh. I have no prior knowledge of this repository.
 ---
 
 ## Phase 0.5: Semantic Code Intelligence Protocol (Both Modes - CRITICAL)
-This workspace utilizes active semantic code intelligence. To prevent compilation errors and minimize token usage, I must strictly follow the semantic lookup rules, tool-usage hierarchies, and mandatory workflows defined in the `# Semantic Code Intelligence Protocol` chapter (**`.clinerules/local-tools.md`**).
+This workspace utilizes active semantic code intelligence. To prevent compilation errors and minimize token usage, I must strictly follow the semantic lookup rules, tool-usage hierarchies, and mandatory workflows defined in the `# Semantic Code Intelligence Protocol` chapter (**`.agent-local/local-tools.md`**).
 
 ---
 

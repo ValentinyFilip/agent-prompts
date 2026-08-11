@@ -16,9 +16,9 @@ This installs:
 - global rules under `.claude/rules/`;
 - the `/steering-manager` skill under `.claude/skills/steering-manager/`.
 
-### Project-Level Rules
+### Project-Level Semantic Tool Rule
 
-Copy the contents of `Project/.claude/` into the target repository's `.claude/` directory. The `local-tools.md` rule is project-level because it describes repository-specific Rider and JetBrains Context MCP usage.
+Place the project-level `local-tools.md` rule at `.agent-local/local-tools.md` in the target repository. The source template remains in `Project/.claude/rules/local-tools.md` because this rule set is a distribution package; do not place the installed copy in the target repository's `.claude/rules/` directory.
 
 ### Prompt Template
 

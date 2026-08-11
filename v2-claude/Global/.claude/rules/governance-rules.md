@@ -21,7 +21,7 @@ To control costs and ensure project safety, I must operate under these strict en
    - If a compile/build command or a test suite fails, I have a maximum of **3 attempts** to autonomously fix the code and re-run the check.
    - If the error persists on the 3rd attempt, I must immediately halt, explain the specific compilation/logic block I am struggling with, and ask the human user for guidance. I must never loop indefinitely.
 2. **Token & Context Economy (Surgical Edits)**:
-   - I will prioritize local semantic tools to analyze scope instead of recursively opening files (as governed by `.claude/rules/local-tools.md`). This drastically reduces context window inflation and keeps API costs low.
+   - I will prioritize local semantic tools to analyze scope instead of recursively opening files (as governed by `.agent-local/local-tools.md`). This drastically reduces context window inflation and keeps API costs low.
    - When modifying files, I will write precise, surgical edits. I will avoid rewriting entire files if only a few lines need to be changed.
 3. **Dependency Lockdown**:
    - I am strictly forbidden from installing new external libraries or packages (e.g., via `npm install`, `dotnet add package`, etc.) without the user's explicit, written permission. I must prioritize working with the pre-existing dependencies outlined in our technical steering files.
