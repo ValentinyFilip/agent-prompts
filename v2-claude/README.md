@@ -13,12 +13,17 @@ Copy the contents of `Global/.claude/` into the current user's Claude Code confi
 
 This installs:
 
+- the mandatory operating contract at `.claude/CLAUDE.md`;
 - global rules under `.claude/rules/`;
 - the `/steering-manager` skill under `.claude/skills/steering-manager/`.
 
-### Project-Level Semantic Tool Rule
+`CLAUDE.md` is the enforcement entry point. Claude Code loads it automatically at the start of each session. The file imports each rule file, declares the precedence order, and defines the boot sequence. Without this file, the rule files load as passive context and Claude can ignore them. Do not leave `.claude/CLAUDE.md` empty.
 
-Place the project-level `local-tools.md` rule at `.agent-local/local-tools.md` in the target repository. The source template remains in `Project/.claude/rules/local-tools.md` because this rule set is a distribution package; do not place the installed copy in the target repository's `.claude/rules/` directory.
+### Project-Level Files
+
+Copy `Project/CLAUDE.md` to the root of the target repository. This file reinforces the user-level contract and imports the repository-local rule.
+
+Place the project-level `local-tools.md` rule at `.agent-local/local-tools.md` in the target repository. The source template is `Project/.agent-local/local-tools.md`. Do not place the installed copy in the target repository's `.claude/rules/` directory.
 
 ### Prompt Template
 
