@@ -28,6 +28,16 @@ Project repositories add one more rule file:
   the active repository, read it during boot. If the file is absent, continue without
   semantic tools and report this fact one time.
 
+### Skills
+
+- **`/simple-english` is mandatory.** It is the operational ASD-STE100 specification for
+  this rule set. Install it before you generate technical prose. If the skill is
+  unavailable, report this fact and apply the minimum ASD-STE100 rules in
+  `rules/language-style.md`.
+- **`/steering-manager` ships with this rule set.** Use it for every create, update,
+  audit, and compress operation on `.steering/`. It performs Caveman compression itself.
+  It is not an external dependency, and it needs no external compression skill.
+
 ---
 
 ## 2. Precedence Order

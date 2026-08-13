@@ -21,7 +21,7 @@ This installs:
 
 ### Project-Level Files
 
-Copy `Project/CLAUDE.md` to the root of the target repository. This file reinforces the user-level contract and imports the repository-local rule.
+Copy `Project/CLAUDE.md` to the root of the target repository. This file combines the general coding guidelines used across normal projects with the enforcement layer of this rule set. It imports the repository-local rule, defines the alignment sequence, and lists the non-negotiable behaviors.
 
 Place the project-level `local-tools.md` rule at `.agent-local/local-tools.md` in the target repository. The source template is `Project/.agent-local/local-tools.md`. Do not place the installed copy in the target repository's `.claude/rules/` directory.
 
@@ -33,8 +33,8 @@ Place the project-level `local-tools.md` rule at `.agent-local/local-tools.md` i
 
 - Configure the Rider and JetBrains Context MCP servers in Claude Code before relying on semantic code intelligence. Use `/mcp` to verify the actual server and tool names.
 - Configure the optional OpenPets MCP server before using the companion integration. Engineering work must continue if OpenPets is unavailable.
-- Install the `/simple-english` skill. The global rules use it as the operational ASD-STE100 specification.
-- The steering manager performs Caveman compression itself. No external compression skill is required.
+- Install the `/simple-english` skill. This skill is mandatory. The global rules use it as the operational ASD-STE100 specification.
+- The `/steering-manager` skill ships with this rule set. It performs Caveman compression itself. No external compression skill is required.
 
 ## Claude Code Controls
 
