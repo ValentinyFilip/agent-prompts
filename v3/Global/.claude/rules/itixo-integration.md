@@ -201,7 +201,7 @@ Semantic-tool clause: see section 4.
 Goal: <create|update> <exact base path>.original.md, applying
       steering-contract.md section 5 Stage 1 directly (no skill).
 Scope: <base path> only. Do not write <base path>.md in this call.
-Constraints: six-field frontmatter contract (steering-contract.md §2, .steering/ only),
+Constraints: six-field frontmatter contract (steering-contract.md §2),
              ASD-STE100 (language-style.md §3); do NOT commit; leave the file unstaged.
 Expected output: the written original's full content or diff, for my relay to the user.
 Semantic-tool clause: see section 4.
@@ -212,7 +212,7 @@ Semantic-tool clause: see section 4.
 Goal: generate <base path>.md from the now-approved <base path>.original.md,
       applying steering-contract.md section 4 and section 5 Stage 2 directly.
 Scope: <base path>.md only.
-Constraints: six-field frontmatter identical to the original (.steering/ only);
+Constraints: six-field frontmatter identical to the original;
              Caveman style (language-style.md §2); every technical fact preserved;
              do NOT commit; leave the file unstaged.
 Expected output: confirmation the counterpart was written and re-read.

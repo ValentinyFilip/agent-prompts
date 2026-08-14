@@ -7,9 +7,10 @@ myself or a delegated plugin agent (per the agentic plugin integration rule unde
 
 `.steering/` documents use the full contract in this file: frontmatter, path mapping,
 and compression. `.specs/<feature-name>/` documents (`requirements`, `design`,
-`tasks`) use their own fixed structure from `spec-mode-engine.md` and only the
-compression rules in section 4 of this file; they do not carry the six-field
-frontmatter block.
+`tasks`) use their own fixed structure from `spec-mode-engine.md`, plus the
+six-field frontmatter contract in section 2 and the compression rules in section 4
+of this file. `.specs/` documents skip only section 3 (path mapping); their path
+comes from `spec-mode-engine.md` instead.
 
 ---
 
@@ -27,10 +28,11 @@ Never create `<base>.original.original.md` or another backup file.
 
 ---
 
-## 2. Six-Field Frontmatter Contract (`.steering/` only)
+## 2. Six-Field Frontmatter Contract (`.steering/` and `.specs/`)
 
-Every `.steering/` document, both files of the pair, starts with exactly these six
-fields, in exactly this order:
+Every `.steering/` document and every `.specs/<feature-name>/` document
+(`requirements`, `design`, `tasks`), both files of each pair, starts with exactly
+these six fields, in exactly this order:
 
 ```yaml
 ---
@@ -44,8 +46,8 @@ last_updated: "YYYY-MM-DD"
 ```
 
 1. Do not add, remove, rename, or reorder these fields.
-2. Use a unique lowercase kebab-case `id`. Check existing `.steering/**/*.md` ids for
-   collisions before assigning one.
+2. Use a unique lowercase kebab-case `id`. Check existing `.steering/**/*.md` and
+   `.specs/**/*.md` ids for collisions before assigning one.
 3. Keep `title`, `description`, and `applies_to` as quoted YAML strings.
 4. Keep `tags` as an inline YAML string array, at least one lowercase kebab-case tag,
    no duplicates.
@@ -86,8 +88,8 @@ Compress only natural-language prose. Apply the Caveman rules in
 preservation rules:
 
 Copy exactly, never compress or alter:
-- the complete six-field frontmatter block (`.steering/` only), including order,
-  quoting, values, and delimiters;
+- the complete six-field frontmatter block, including order, quoting, values, and
+  delimiters;
 - all Markdown headings and their hierarchy;
 - fenced and indented code blocks, including spacing and comments;
 - inline code and its backticks;
@@ -105,7 +107,7 @@ distinct. Do not add facts, advice, interpretation, or assumptions.
 
 Before writing the compressed file, compare it against the original:
 1. The original stays byte-for-byte unchanged.
-2. Frontmatter (`.steering/` only) is byte-for-byte identical.
+2. Frontmatter is byte-for-byte identical.
 3. Every technical fact and normative constraint is present and uncontradicted.
 4. The destination is the canonical sibling `<base>.md`.
 5. Re-read both files after writing and repeat this check.
@@ -122,8 +124,8 @@ exempt from approval.
 1. Resolve the path (section 3, for `.steering/`) or use the fixed `.specs/` name
    from `spec-mode-engine.md`.
 2. For an update, read the existing original and counterpart first.
-3. Write or edit `<base>.original.md` only, with the frontmatter contract (section 2,
-   `.steering/` only) and the ASD-STE100 rules in `language-style.md`.
+3. Write or edit `<base>.original.md` only, with the frontmatter contract (section 2)
+   and the ASD-STE100 rules in `language-style.md`.
 4. Halt. Report the absolute path and the content or diff. Wait for the user's
    explicit approval. Do not proceed on silence.
 
