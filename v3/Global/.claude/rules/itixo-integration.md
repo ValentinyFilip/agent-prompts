@@ -31,6 +31,21 @@ Do not re-check itixo presence inside a single session.
 When itixo is present, delegate the listed action to the listed agent.
 Do not perform the action directly.
 
+Delegation is automatic and permanent. It is the default execution path of this
+rule set, not an option:
+
+- Do not wait for the user to ask for delegation.
+- Do not ask the user for permission to delegate.
+- Do not offer a direct alternative to delegation.
+- Do not treat a small task, a fast task, or a one-file task as an exception.
+- Silence of the user is not permission to act directly.
+- Only an explicit and current instruction of the user ("do it yourself", "no
+  subagents") suspends delegation, and only for that one task.
+
+If you start an action from the table directly, stop at once, report the
+deviation in one sentence per the operating contract section 6, then delegate
+the action.
+
 | Action | Delegate to | Model tier |
 |---|---|---|
 | Locate code, map a codebase area, answer "where is X" | `itixo-investigator` | haiku |
@@ -77,12 +92,26 @@ When itixo is present, this rule set, acting as orchestrator, does not:
 - hand-write a GitHub issue;
 - rewrite documentation content.
 
+These are negative rules. A softer statement in another rule never overrides
+them. The first inline search is already a violation: delegate before you
+search, not after the first result disappoints.
+
+The orchestrator is not a worker. It thinks, it decomposes, it integrates, and
+it talks to the user. It does not do the work of a role in the section 2 table.
+
 Delegate each of these actions through the table in section 2. See section 5
 for the two-phase delegation required on `.steering/` and `.specs/` writes.
 
-The orchestrator still performs: `.agent-local/` memory updates, the
-itixo detection check, relaying every halt and every subagent question to
-the user, `git status`, and commit proposals. These stay with the
+**Permitted read.** To make a cross-step judgment, the orchestrator may read one
+file that is already located, for example a file named by the user or a file
+reported by `itixo-investigator`. Reading one known file is permitted.
+Discovery of where a thing is, is not permitted.
+
+The orchestrator still performs: the boot reads of `.steering/` and
+`.agent-local/` (operating contract section 3), `.agent-local/` memory updates,
+the itixo detection check, the pre-delegation contract in
+`governance-rules.md` section 4, relaying every halt and every subagent
+question to the user, `git status`, and commit proposals. These stay with the
 orchestrator because they are either trivial or because they are the
 conversational thread the user is actually part of.
 
@@ -192,6 +221,12 @@ Goal: <the one precise change>
 Scope: <exact file path(s) to touch>
 Constraints: <what NOT to touch> + no-expansion boundary + Dependency Lockdown (governance-rules.md §2.3)
              + do NOT commit; leave the change unstaged.
+Write-work discipline (all five steps, in order):
+  1. Read each target file before you edit it.
+  2. Make the smallest change that satisfies the goal.
+  3. Inspect the dependencies of the changed symbols, inside the given scope only.
+  4. Inspect your own diff before you report.
+  5. Run verification proportionate to the change (build, lint, or the named test).
 Expected output: diff summary + verification result.
 Semantic-tool clause: see section 4.
 ```
@@ -294,10 +329,25 @@ Expected output: diff of the doc change.
 ### `itixo-github-issues`
 ```
 Goal: <the request or bug report to structure>.
-Scope: <target GitHub repo>.
-Constraints: max 2 parent-child edges (Feature -> Feature -> Task); use native
-             IssueTypes when available.
-Expected output: created issue URL(s) and their hierarchy.
+Scope: <target GitHub repo, owner, and known project or IssueType conventions>.
+Constraints: one agent owns assessment and creation together; do not split the
+             duplicate check from the creation;
+             check for a duplicate issue first;
+             determine whether native GitHub IssueTypes are available;
+             with native IssueTypes: root `Feature`, direct children `Task` by
+             default, a direct child `Feature` only when that child is split into
+             executable children;
+             max 2 parent-child edges (Feature -> Feature -> Task);
+             use the lowercase `feature` and `task` label fallback only when
+             native IssueTypes are unavailable in a personal repository; create
+             only the missing fallback labels; use existing labels otherwise;
+             return an unknown repository, outcome, scope, or success criterion
+             to me as a user question; do NOT commit.
+Expected output: decision and rationale; issue URL(s) or number(s); linked
+             sub-issues and parallel waves; IssueType availability plus type
+             readback evidence, or the personal-repository fallback
+             justification plus label creation and assignment readback
+             evidence; parent-child hierarchy and depth evidence; blockers.
 ```
 
 ---
@@ -312,7 +362,40 @@ edits and are not permitted.
 
 ---
 
-## 8. Fallback (Itixo Absent)
+## 8. Security-Review Lifecycle
+
+This section applies when the user explicitly asks for a security review.
+`itixo-security-reviewer` runs on opus at max effort, per section 2.
+
+1. The security reviewer is read-only. It never edits a file.
+2. On a pull request, publish each finding inline. If an inline comment is not
+   possible, publish one general pull request comment.
+3. If a Critical or High finding stays unresolved, submit `REQUEST_CHANGES`. If
+   the platform does not permit it, submit `COMMENT` and identify the review as
+   a self-review.
+4. If no finding stays open, publish one neutral clean-review comment.
+5. Outside a pull request, report the findings in chat in the same order of
+   severity.
+
+**Automatic remediation.** The orchestrator owns the decision to remediate. It
+delegates the fix; it does not write the fix itself. Automatic remediation is
+permitted only for a localized fix that keeps the behavior outside the
+vulnerability unchanged, and that needs none of these:
+
+- a dependency update or a version update;
+- a data migration;
+- a public API change;
+- an authentication or authorization policy decision;
+- a secret rotation;
+- an architecture change.
+
+For a permitted fix: publish the finding, delegate the fix to `itixo-builder`,
+delegate the validation to `itixo-tester`, then reply to the finding and resolve
+it. Keep every other finding open for the decision of the user.
+
+---
+
+## 9. Fallback (Itixo Absent)
 
 When itixo is absent, perform every action in the section 2 table directly,
 using `Read`, `Grep`, `Glob`, `Edit`, `Write`, and `Bash`, governed by the

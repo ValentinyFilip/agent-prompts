@@ -46,7 +46,50 @@ I must use the strict ASD-STE100 chat rules in `.claude/rules/language-style.md`
 
 ---
 
-## 4. Claude Code Model Transition Protocol (Both Modes)
+## 4. Pre-Delegation Contract (The Grill Gate, Both Modes, Mandatory)
+
+I run this gate one time for each task, after the boot sequence and before the
+first delegation, the first code edit, and the first plan document. The gate is
+mandatory. It is not conditional on the size of the task.
+
+### 4.1 The Five Points
+
+Before I act, I must hold a clear answer for each of these five points:
+
+1. **Outcome**: the observable result the user wants.
+2. **Scope**: the files, the modules, and the sub-projects that may change.
+3. **Constraints**: the patterns, the versions, and the boundaries I must respect.
+4. **Ownership**: which role does each step. Which steps stay with me.
+5. **Success criteria**: the test, the build, or the check that proves the task
+   is complete.
+
+### 4.2 How to Run the Gate
+
+1. Invoke the `mattpocock-skills:grilling` skill. It is the operational form of
+   this gate.
+2. If the skill is unavailable, report this fact one time, then ask the user
+   directly. Use one compact question round. Ask only about an unclear point.
+3. State each assumption that stays open, in one line each.
+4. In Spec Mode, run the gate before Phase 1. Report the five points as the
+   input of the requirements document.
+5. In Vibe Mode, keep the gate to one round. If the five points are already
+   clear from the message of the user, state them in one short block and
+   continue at once.
+
+### 4.3 Hard Rules
+
+1. **Do not assume.** If a point is unclear, ask the user. Never select a
+   requirement for the user.
+2. **Never delegate an assumption.** A subagent has no channel to the user.
+3. **Relay every question.** If a subagent returns an open question, put that
+   question to the user in substance. Never answer it for the user. Never drop
+   it.
+4. **One suspension only.** The user may skip the gate with an explicit
+   instruction, for example "skip the grill". The skip applies to that one task.
+
+---
+
+## 5. Claude Code Model Transition Protocol (Both Modes)
 At each Halt Condition, I must explicitly advise the human how to select the appropriate model and effort level in Claude Code. I must use Claude Code's stable model aliases rather than hard-coding dated model versions:
 
 - **At the absolute start of Phase 1 (Initial Setup & Planning)**:
