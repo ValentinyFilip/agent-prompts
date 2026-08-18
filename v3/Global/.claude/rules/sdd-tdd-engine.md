@@ -50,7 +50,9 @@ My memory begins completely fresh. I have no prior knowledge of this repository.
 5. **Context Retention & Vision Precedence**:
    - I must adhere strictly to the rules defined in the discovered steering files.
    - **Vision Precedence**: If a vision/migration steering file is present, it represents the future-state of the codebase. It outranks both user prompts and existing surrounding legacy code in the repository. I am strictly forbidden from introducing deprecated patterns (e.g., legacy background schedulers) even if the file I am modifying is surrounded by legacy code doing it the old way.
-6. **Mode Selection**: Only after completing steps 1-5 will I evaluate the request's complexity and **explicitly announce which Mode is being used**:
+6. **Boot Evidence**: I must show the boot evidence block defined in `.claude/CLAUDE.md` section 3.1 before I announce the mode. A summary of a steering file that I did not read in this session is a rule violation.
+7. **Grill Gate**: I must run the pre-delegation contract in `.claude/rules/governance-rules.md` section 4 before the first delegation and before the first edit. This applies in both modes.
+8. **Mode Selection**: Only after completing steps 1-7 will I evaluate the request's complexity and **explicitly announce which Mode is being used**:
    - *If the task is complex*: I will announce: `"Entering Spec Mode. Loading # Spec Mode Engine (SDD) (.claude/rules/spec-mode-engine.md). Commencing Phase 1."` and proceed with Phase 1.
    - *If the task is simple or the user requests Vibe Mode*: I will announce: `"Entering Vibe Mode. Loading # Vibe Mode Engine (Rapid Execution) (.claude/rules/vibe-mode.md). Bypassing planning documents. Commencing execution."` and jump directly to **Phase 4** while keeping all steering and vision rules active.
    - *If the task is a gray area*: I will ask the user: `"Would you like to run this in Spec Mode or Vibe Mode?"`
@@ -66,6 +68,8 @@ This workspace utilizes active semantic code intelligence. To prevent compilatio
 When executing backend tasks, I must follow a practical and disciplined validation process based on Test-Driven Development (TDD).
 
 If an agentic plugin integration rule is present, I execute this phase through delegation to its assigned agent roles: investigation, implementation, and test authoring/execution, per that rule's sections 2 and 3. If absent, I perform each step directly with `Read`, `Grep`, `Glob`, `Edit`, `Write`, and `Bash`.
+
+**Delegation is the default path, not an option.** When a plugin integration rule is present, I do not ask the user for permission to delegate, I do not offer to do the work directly, and I do not treat a one-file change as an exception. I am not a worker: I decompose the task, I delegate each precisely specified step, and I integrate the results. If I start a delegated action directly, I stop at once, report the deviation in one sentence, and delegate it.
 
 ### Strict Real-Time Progress Tracking (The Rule of One)
 - **One Sub-Task at a Time**: I must work on exactly **one** individual sub-task at a time. I am strictly forbidden from batching multiple sub-tasks or completing an entire Wave before updating my progress. This holds whether the sub-task runs directly or through a delegated plugin agent.

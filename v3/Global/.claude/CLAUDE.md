@@ -42,8 +42,16 @@ Load these rule files only if present:
   this rule set. Install it before you generate technical prose. If the skill is
   unavailable, report this fact and apply the minimum ASD-STE100 rules in
   `rules/language-style.md`.
+- **`mattpocock-skills:grilling` is mandatory.** It is the operational form of the
+  pre-delegation contract in `rules/governance-rules.md` section 4. Invoke it one time
+  for each task, before the first delegation and before the first edit. If the skill is
+  unavailable, report this fact and ask the user directly in one compact question round.
 - **No skill performs `.steering/` or `.specs/` writes.** Apply `rules/steering-contract.md`
   directly for every create, update, audit, and compress operation.
+- **No skill performs orchestration.** Do not invoke a plugin orchestration skill, for
+  example `itixo:dirigent`. Its rule file re-enables subagent commits and a
+  three-worker batch. Both break section 4 rules 3 and 9. This contract owns
+  orchestration.
 - **An agentic plugin integration is optional.** If a `rules/*-integration.md` file
   matching the agentic plugin integration contract is present, it governs delegation
   to the installed plugin's agents. If absent, this rule set operates standalone. See
@@ -69,22 +77,50 @@ deprecated pattern, report the conflict in one sentence, then do the requested w
 
 ## 3. Boot Sequence (Run Before Any Other Work)
 
-Run these steps at the start of each session and at the start of each new task:
+The boot sequence is mandatory and automatic. Run it at the start of each session
+and at the start of each new task. Do not skip a step because the task looks
+small. Do not answer from memory of an earlier session.
 
 1. Show this line: `💡 Before Phase 1, run /model opus and /effort high or /effort xhigh in Claude Code.`
 2. List the files in `.steering/`. Exclude each `*.original.md` file.
-3. Read only the Caveman-compressed `.md` files in `.steering/`.
+3. Read every Caveman-compressed `.md` file in `.steering/`. Read no
+   `*.original.md` file.
 4. Identify the target sub-project or sub-projects of the request.
 5. If `.agent-local/activeContext.md` exists, read it.
 6. If `.agent-local/sessionProgress.md` exists, read it.
 7. If an agentic plugin integration rule is present under `rules/`, run its plugin
    detection check (section 1).
-8. Announce the selected mode. Use the exact sentence in `sdd-tdd-engine.md`.
+8. Show the boot evidence block (section 3.1).
+9. Run the pre-delegation contract in `rules/governance-rules.md` section 4.
+10. Announce the selected mode. Use the exact sentence in `sdd-tdd-engine.md`.
 
 If `.steering/` does not exist, report this fact, then ask the user to select Spec Mode
 or Vibe Mode.
 
-Do not write code, create a plan document, or edit a file before step 8 is complete.
+Do not write code, create a plan document, edit a file, or delegate a task before
+step 10 is complete.
+
+### 3.1 Boot Evidence (Mandatory Proof of Read)
+
+The boot reads are not silent. Before the mode announcement, show one compact
+block. Use Caveman shorthand. Keep it to one line for each file:
+
+```text
+BOOT
+steering: <file>.md — <5-10 word summary> | <file>.md — <summary> | ...
+agent-local: activeContext.md — <summary> | sessionProgress.md — <summary>
+target: <sub-project(s)>
+plugin: <present|absent>
+```
+
+Rules for this block:
+
+1. Name each file you read. A file you did not read must not appear.
+2. If a directory or a file is absent, write `absent` for it. Never omit the line.
+3. If the block is empty for `.steering/`, you did not align. Stop and run steps
+   2 and 3 before you continue.
+4. A summary written without a read of the file is a rule violation. Report it
+   per section 6.
 
 ---
 
@@ -110,19 +146,31 @@ Do not write code, create a plan document, or edit a file before step 8 is compl
 11. **Local memory**: Update `.agent-local/activeContext.md` and
     `.agent-local/sessionProgress.md` at the end of each turn that changes files.
 12. **Plugin delegation**: When an agentic plugin integration rule is present, delegate
-    per its section 2 and respect its section 3 boundaries. When absent, perform those
-    actions directly.
+    per its section 2 and respect its section 3 boundaries. Delegation is automatic.
+    Do not ask permission to delegate and do not offer a direct alternative. Only an
+    explicit and current instruction of the user suspends it, for one task. When no
+    such rule is present, perform those actions directly.
+13. **Boot evidence**: Show the boot evidence block in section 3.1 before the mode
+    announcement. Never state a steering fact that you did not read this session.
+14. **Grill gate**: Run the pre-delegation contract in `rules/governance-rules.md`
+    section 4 for every task. Ask the user about each unclear point. Never select a
+    requirement for the user.
+15. **Question relay**: Put every open question of a subagent to the user, in
+    substance. Never answer it for the user. Never drop it.
 
 ---
 
 ## 5. Compliance Self-Check
 
-Before the first tool call of a task, confirm these four points:
+Before the first tool call of a task, confirm these six points:
 
 1. The boot sequence in section 3 is complete.
-2. The mode is announced.
-3. The target sub-project is identified.
-4. The planned action does not break a rule in section 4.
+2. The boot evidence block in section 3.1 is shown.
+3. The grill gate in `rules/governance-rules.md` section 4 is complete.
+4. The mode is announced.
+5. The target sub-project is identified.
+6. The planned action does not break a rule in section 4. If a plugin integration
+   rule is present, the planned action is a delegation, not direct work.
 
 Before each reply, confirm these three points:
 
