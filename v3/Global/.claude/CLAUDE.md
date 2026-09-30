@@ -42,10 +42,17 @@ Load these rule files only if present:
   this rule set. Install it before you generate technical prose. If the skill is
   unavailable, report this fact and apply the minimum ASD-STE100 rules in
   `rules/language-style.md`.
-- **`mattpocock-skills:grilling` is mandatory.** It is the operational form of the
-  pre-delegation contract in `rules/governance-rules.md` section 4. Invoke it one time
-  for each task, before the first delegation and before the first edit. If the skill is
-  unavailable, report this fact and ask the user directly in one compact question round.
+- **The grill gate uses no skill.** Run the pre-delegation contract in
+  `rules/governance-rules.md` section 4 as one direct question round with the user.
+  Run it one time for each task, before the first delegation and before the first edit.
+- **`ponytail:ponytail` is mandatory for build work.** It is the operational form of
+  the minimal-change rule in Phase 4 of `rules/sdd-tdd-engine.md`. Invoke it before the
+  first code edit of a task. If the skill is unavailable, report this fact and apply the
+  ladder in that section directly.
+- **`/wayfinder` is optional.** Only the user starts it, for planning that needs more
+  than one session, before Spec Mode. Apply the rules in `rules/spec-mode-engine.md`,
+  section "Optional On-Ramp: Wayfinder". If the skill is unavailable, report this fact
+  and continue without it.
 - **No skill performs `.steering/` or `.specs/` writes.** Apply `rules/steering-contract.md`
   directly for every create, update, audit, and compress operation.
 - **No skill performs orchestration.** Do not invoke a plugin orchestration skill, for

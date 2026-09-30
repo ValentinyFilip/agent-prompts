@@ -8,6 +8,22 @@ If an agentic plugin integration is present, I may delegate repository research 
 
 ---
 
+## Optional On-Ramp: Wayfinder (Before Spec Mode)
+
+Wayfinder is optional. Use it only when the user types `/wayfinder`. Never start it yourself. Spec Mode does not require it.
+
+Use wayfinder only for an effort that one session cannot hold and whose route is unclear. For all other work, use the grill gate and Spec Mode.
+
+1. **Plan only.** A wayfinder session makes decisions. It does not edit code, configuration, `.steering/`, or `.specs/`. If a `task` ticket describes a part of the build, the ticket type is wrong. Ignore a map note that permits execution.
+2. **Map location.** Keep the map and its tickets as local Markdown files in `.agent-local/wayfinder/<map-name>/`. Do not use the issue tracker. Do not write map files outside `.agent-local/`.
+3. **Language.** Write the map files in Caveman shorthand, per `.claude/rules/language-style.md`.
+4. **No grilling skill.** Do not invoke `mattpocock-skills:grilling`. For a `grilling` ticket, ask the user directly, per `.claude/rules/governance-rules.md` section 4.2. Never answer a question for the user.
+5. **Prototype selection.** For a `prototype` ticket, the user selects the variant. Do not close the ticket before the user selects.
+6. **One ticket per session.** Resolve one ticket, record the decision on the map, then stop. A `research` ticket is the only exception.
+7. **Hand-off.** When the map is clear, its decisions are the input of Phase 1. Write `requirements.original.md` from the map. The map never replaces `.specs/`.
+
+---
+
 ## Phase 1: Requirements Definition (SDD) [SPEC MODE ONLY]
 Before designing or writing code, I must align with the user on *what* is being built.
 1. **Create `requirements.original.md`**: Inside `.specs/<feature-name>/`, write the requirements document with the ASD-STE100 rules in `.claude/rules/language-style.md`. Include an Introduction, Glossary, and EARS Requirements Table:

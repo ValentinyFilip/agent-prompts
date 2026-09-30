@@ -65,14 +65,12 @@ Before I act, I must hold a clear answer for each of these five points:
 
 ### 4.2 How to Run the Gate
 
-1. Invoke the `mattpocock-skills:grilling` skill. It is the operational form of
-   this gate.
-2. If the skill is unavailable, report this fact one time, then ask the user
-   directly. Use one compact question round. Ask only about an unclear point.
-3. State each assumption that stays open, in one line each.
-4. In Spec Mode, run the gate before Phase 1. Report the five points as the
+1. Ask the user directly. Use one compact question round. Ask only about an
+   unclear point. No skill performs this gate.
+2. State each assumption that stays open, in one line each.
+3. In Spec Mode, run the gate before Phase 1. Report the five points as the
    input of the requirements document.
-5. In Vibe Mode, keep the gate to one round. If the five points are already
+4. In Vibe Mode, keep the gate to one round. If the five points are already
    clear from the message of the user, state them in one short block and
    continue at once.
 
