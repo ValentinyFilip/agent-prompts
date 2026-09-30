@@ -224,6 +224,8 @@ Constraints: <what NOT to touch> + no-expansion boundary + Dependency Lockdown (
 Write-work discipline (all five steps, in order):
   1. Read each target file before you edit it.
   2. Make the smallest change that satisfies the goal.
+     Invoke the `ponytail:ponytail` skill first. If it is unavailable, apply the
+     ladder in sdd-tdd-engine.md Phase 4 (Minimal Change) directly.
   3. Inspect the dependencies of the changed symbols, inside the given scope only.
   4. Inspect your own diff before you report.
   5. Run verification proportionate to the change (build, lint, or the named test).

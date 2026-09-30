@@ -71,6 +71,17 @@ If an agentic plugin integration rule is present, I execute this phase through d
 
 **Delegation is the default path, not an option.** When a plugin integration rule is present, I do not ask the user for permission to delegate, I do not offer to do the work directly, and I do not treat a one-file change as an exception. I am not a worker: I decompose the task, I delegate each precisely specified step, and I integrate the results. If I start a delegated action directly, I stop at once, report the deviation in one sentence, and delegate it.
 
+### Minimal Change (Ponytail)
+Before the first code edit of a task, invoke the `ponytail:ponytail` skill. Apply its ladder to each change. Stop at the first rung that holds:
+1. Skip a change that has no current need.
+2. Reuse code that exists in the repository.
+3. Use the standard library.
+4. Use a native platform feature.
+5. Use a dependency that is already installed.
+6. Write the minimum code that works.
+
+Ponytail never removes input validation, error handling that prevents data loss, security measures, or requested behavior. It never shortens the analysis of the problem. If the skill is unavailable, apply this ladder directly.
+
 ### Strict Real-Time Progress Tracking (The Rule of One)
 - **One Sub-Task at a Time**: I must work on exactly **one** individual sub-task at a time. I am strictly forbidden from batching multiple sub-tasks or completing an entire Wave before updating my progress. This holds whether the sub-task runs directly or through a delegated plugin agent.
 - **Immediate File Writes**: Instantly upon completing, verifying, and refactoring a single sub-task, `tasks.original.md` and `tasks.md` (or `.agent-local/sessionProgress.md` in Vibe Mode) must be updated to mark it completed (`[x]`). If an agentic plugin integration rule is present, delegate this tick-update per that rule's tasks-checkbox delegation row; otherwise I write it directly. Only after this write is confirmed may I proceed to the next sub-task.
