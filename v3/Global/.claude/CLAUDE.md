@@ -25,6 +25,16 @@ Load and apply these rule files:
 @rules/governance-rules.md
 @rules/open-pets.md
 
+Path-scoped language rules load automatically. Claude Code reads the `paths:`
+frontmatter and loads each file only when it works on a matching file:
+
+- `rules/lang-csharp.md`: C# and .NET files.
+- `rules/lang-sql.md`: SQL scripts and Entity Framework Core migrations.
+- `rules/lang-markdown.md`: Markdown files.
+
+Do not import these files with `@`. An import loads the file in every session and
+ignores `paths:`. A `.steering/` tech file outranks each language rule.
+
 Load these rule files only if present:
 
 - An agentic plugin integration rule under `rules/` (a file whose name ends in
