@@ -47,3 +47,13 @@ For every exploration or refactoring task in the C# solution, I must execute thi
 
 ## 4. Build & Diagnostics First
 When verifying C# code changes, I must check the Rider MCP server's semantic diagnostics first, when that capability is available, before running terminal-level `dotnet build` commands. This allows Rider to catch type safety, import errors, and dependency diagnostics quickly, preventing compile-loop overhead. If diagnostic tools are not exposed, I must proceed directly to the repository's documented build and test commands.
+
+---
+
+## 5. Access Through sharp-codemode
+
+If the sharp-codemode server is present, the Rider and Context tools are also available as `Codemode.Rider.*` and `Codemode.Context.*` inside a script. Use `search` to find the function signatures.
+
+The order of section 3 stays the same. In a script, call the Context search first. Then call the Rider symbol tools. The fallback conditions of section 3 apply to a script in the same way.
+
+The restriction in section 2 applies to a script: do not use file search inside a script to find C# symbols before the semantic functions have been tried.

@@ -108,11 +108,12 @@ reported by `itixo-investigator`. Reading one known file is permitted.
 Discovery of where a thing is, is not permitted.
 
 The orchestrator still performs: the boot reads of `.steering/` and
-`.agent-local/` (operating contract section 3), `.agent-local/` memory updates,
-the itixo detection check, the pre-delegation contract in
-`governance-rules.md` section 4, relaying every halt and every subagent
-question to the user, `git status`, and commit proposals. These stay with the
-orchestrator because they are either trivial or because they are the
+`.agent-local/` (operating contract section 3), the saved script
+`boot-steering` through the sharp-codemode server for those boot reads,
+`.agent-local/` memory updates, the itixo detection check, the pre-delegation
+contract in `governance-rules.md` section 4, relaying every halt and every
+subagent question to the user, `git status`, and commit proposals. These stay
+with the orchestrator because they are either trivial or because they are the
 conversational thread the user is actually part of.
 
 ---
@@ -126,6 +127,16 @@ prompt, in addition to goal, exact paths, constraints, and expected output:
 > semantic tool covers this lookup or edit, use that tool before `Grep`,
 > `Glob`, or `Bash`. Fall back to `Grep`, `Glob`, or `Bash` only under the
 > fallback conditions stated in `local-tools.md`.
+
+> If the sharp-codemode tools are available to you:
+>
+> - Investigator: call `search`, then `run_saved` for a saved script that fits.
+>   Do not write a script. If no script fits, return a NEED_SCRIPT block
+>   (purpose, inputs, output) and stop.
+> - Builder and tester: call `search` first. Reuse a saved script if one fits.
+>   Use `execute_readonly` for read-only work. Save a useful script with `saveAs`.
+>   Never run the approve command. Never edit the approval or the configuration file.
+>   Follow `rules/sharp-codemode.md` sections 5 to 7.
 
 This keeps semantic-tool priority in effect even when the acting agent is
 an itixo agent rather than the top-level orchestrator.
@@ -213,7 +224,10 @@ Scope: <paths or package/module names already known, or "unknown, search from re
 Constraints: read-only. No fixes, no design, no opinions.
 Expected output: grouped file:line-symbol-note evidence.
 Semantic-tool clause: see section 4.
+Script clause: see section 4.
 ```
+
+When a suitable saved script exists, name it in Scope, for example: `Scope: run_saved count-lines {pattern: "*.md"}`.
 
 ### `itixo-builder` (generic implementation)
 ```
@@ -231,6 +245,7 @@ Write-work discipline (all five steps, in order):
   5. Run verification proportionate to the change (build, lint, or the named test).
 Expected output: diff summary + verification result.
 Semantic-tool clause: see section 4.
+Script clause: see section 4.
 ```
 
 ### `itixo-builder` (new `.steering/` pair, or any `.specs/` write — Phase A, original only)
@@ -310,6 +325,7 @@ Scope: <test file path(s)>; implementation file(s) to read, not edit.
 Constraints: test-file-only edits; do NOT commit; leave the file unstaged.
 Expected output: pass/fail result of the run, and the test file diff.
 Semantic-tool clause: see section 4.
+Script clause: see section 4.
 ```
 
 ### `itixo-reviewer` / `itixo-security-reviewer`

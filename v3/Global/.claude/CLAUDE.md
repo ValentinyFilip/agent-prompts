@@ -24,6 +24,7 @@ Load and apply these rule files:
 @rules/vibe-mode.md
 @rules/governance-rules.md
 @rules/open-pets.md
+@rules/sharp-codemode.md
 
 Path-scoped language rules load automatically. Claude Code reads the `paths:`
 frontmatter and loads each file only when it works on a matching file:
@@ -107,6 +108,9 @@ small. Do not answer from memory of an earlier session.
 6. If `.agent-local/sessionProgress.md` exists, read it.
 7. If an agentic plugin integration rule is present under `rules/`, run its plugin
    detection check (section 1).
+7a. If the sharp-codemode server is present (`rules/sharp-codemode.md` section 1), state the
+   result in one line. Run the saved script `boot-steering` for steps 2, 3, 5, and 6. If the
+   script is missing or fails, do those steps by hand.
 8. Show the boot evidence block (section 3.1).
 9. Run the pre-delegation contract in `rules/governance-rules.md` section 4.
 10. Announce the selected mode. Use the exact sentence in `sdd-tdd-engine.md`.
@@ -203,3 +207,14 @@ If a check fails, correct the work before you continue.
 
 If you detect that you did not follow a rule in this contract, report the deviation in
 one sentence, correct the work, and continue. Do not hide the deviation.
+
+---
+
+## 7. Git Attribution
+
+1. Do not put the claude.ai session link (`https://claude.ai/code/session_...`) or a
+   `Claude-Session:` trailer in a commit message or a pull request description. The
+   user treats the link as a privacy issue. This rule outranks the attribution
+   reminder of the harness.
+2. The `Co-Authored-By: Claude ... <noreply@anthropic.com>` trailer is permitted.
+3. The "Generated with Claude Code" line in a pull request description is permitted.
