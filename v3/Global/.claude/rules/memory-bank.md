@@ -57,10 +57,10 @@ My private developer scratchpad. **These files must be written and maintained ex
 ## Workspace Alignment Step (ALWAYS RUN FIRST AT BOOT)
 When my memory resets and a task begins, I must execute these steps in order before choosing an operating mode or writing code:
 1. List only Caveman-compressed files (No `*.original.md`) in the `.steering/` directory.
-2. **Read ONLY the `.md` (Caveman-compressed) files** inside `.steering/` to semantically map our Product, Technical, Structure, and Migration boundaries. Do not read the `*.original.md` files.
-3. Identify **which specific sub-project(s)** the active task targets, and isolate my attention to the guidelines of those target projects.
+2. Identify **which specific sub-project(s)** the active task targets, and isolate my attention to the guidelines of those target projects.
+3. **Read ONLY the `.md` (Caveman-compressed) files** inside `.steering/` that apply to the target, per the read scope in `.claude/CLAUDE.md` section 3.2. If the sharp-codemode server is present, read only the needed sections, per section 3.3. Do not read the other steering files. Do not read the `*.original.md` files.
 4. Check if `.agent-local/activeContext.md` and `.agent-local/sessionProgress.md` exist. If present, **read them immediately** (both are in Caveman shorthand) to restore my active memory of the current debugging state, recent local changes, and outstanding micro-tasks.
-5. **Show the proof of read**: I must show the boot evidence block defined in `.claude/CLAUDE.md` section 3.1. One line for each file that I read, plus `absent` for each file that does not exist.
+5. **Show the proof of read**: I must show the boot evidence block defined in `.claude/CLAUDE.md` section 3.1. One line for each file that I read, the `skipped` line for each steering file that I did not read, plus `absent` for each file that does not exist.
 
 These steps are not optional and they are not conditional on the size of the task. A small edit uses the same alignment as a large feature. I am strictly forbidden from stating a steering fact, a tech stack fact, or a naming convention that I did not read in this session. If I skip the alignment, I must report the deviation in one sentence, run the alignment, and continue.
 

@@ -101,16 +101,17 @@ small. Do not answer from memory of an earlier session.
 
 1. Show this line: `💡 Before Phase 1, run /model opus and /effort high or /effort xhigh in Claude Code.`
 2. List the files in `.steering/`. Exclude each `*.original.md` file.
-3. Read every Caveman-compressed `.md` file in `.steering/`. Read no
-   `*.original.md` file.
-4. Identify the target sub-project or sub-projects of the request.
+3. Identify the target sub-project or sub-projects of the request.
+4. Read only the Caveman-compressed `.steering/` files that apply to the target
+   (section 3.2). Read no `*.original.md` file.
 5. If `.agent-local/activeContext.md` exists, read it.
 6. If `.agent-local/sessionProgress.md` exists, read it.
 7. If an agentic plugin integration rule is present under `rules/`, run its plugin
    detection check (section 1).
 7a. If the sharp-codemode server is present (`rules/sharp-codemode.md` section 1), state the
-   result in one line. Run the saved script `boot-steering` for steps 2, 3, 5, and 6. If the
-   script is missing or fails, do those steps by hand.
+   result in one line. If the server is present, do steps 2, 4, 5, and 6 with the saved
+   scripts `boot-index` and `steering-sections` (section 3.3). If a script is missing
+   or fails, do those steps with `Read` and report this one time.
 8. Show the boot evidence block (section 3.1).
 9. Run the pre-delegation contract in `rules/governance-rules.md` section 4.
 10. Announce the selected mode. Use the exact sentence in `sdd-tdd-engine.md`.
@@ -128,7 +129,8 @@ block. Use Caveman shorthand. Keep it to one line for each file:
 
 ```text
 BOOT
-steering: <file>.md — <5-10 word summary> | <file>.md — <summary> | ...
+steering: <file>.md[§<section>,<section>] — <5-10 word summary> | <file>.md — <summary> | ...
+skipped: <file>.md | <file>.md | ...
 agent-local: activeContext.md — <summary> | sessionProgress.md — <summary>
 target: <sub-project(s)>
 plugin: <present|absent>
@@ -136,12 +138,51 @@ plugin: <present|absent>
 
 Rules for this block:
 
-1. Name each file you read. A file you did not read must not appear.
-2. If a directory or a file is absent, write `absent` for it. Never omit the line.
-3. If the block is empty for `.steering/`, you did not align. Stop and run steps
-   2 and 3 before you continue.
-4. A summary written without a read of the file is a rule violation. Report it
+1. Name each file you read. A file you did not read must not appear. If you read only
+   some sections of a file, name them in `[§...]`. If you read the full file, omit `[§...]`.
+2. Name each `.steering/` file that you did not read on the `skipped` line, without a
+   summary. If you read all files, write `none`.
+3. If a directory or a file is absent, write `absent` for it. Never omit the line.
+4. If the block is empty for `.steering/`, you did not align. Stop and run steps
+   2 to 4 before you continue.
+5. A summary written without a read of the file is a rule violation. Report it
    per section 6.
+
+### 3.2 Steering Read Scope
+
+Read a `.steering/` file only if one of these conditions is true:
+
+1. The file is `vision.md`. It outranks the other steering files.
+2. The file name or the path names the target sub-project or the external system
+   that the task touches, for example `his.md` or `fama-glossary.md` for a HIS task
+   that reads FaMa.
+3. The task changes the global layer that the file describes. Read `tech.md` for a
+   build, a dependency, or a framework change. Read `structure.md` for a new project
+   or a new directory. Read `architecture.md` for a change between services. Read
+   `product.md` for a new business feature.
+4. No other steering file applies to the target.
+
+If the name of a file does not tell its scope, read only its frontmatter. Use the
+`applies_to` and `description` values to decide.
+
+Do not state a fact from a skipped file or a skipped section. If the task later needs
+it, read it at that time and report the read in one line.
+
+### 3.3 Section Reads Through sharp-codemode
+
+If the sharp-codemode server is present, read only the sections that the task needs:
+
+1. Run `boot-index`. It returns each steering file with its size and its `##` and
+   `###` headings, the full `.agent-local/activeContext.md`, and only the open items
+   of `.agent-local/sessionProgress.md`.
+2. Select the files with section 3.2. In each file, select the headings that apply to
+   the task.
+3. Run `steering-sections` with `files` and `sections`. Pass heading keywords in
+   `sections`.
+4. Read a full file (empty `sections`) only for `vision.md`, for a file that the task
+   changes, or for a file smaller than 3,000 characters.
+5. The server cuts each result at 20,000 characters. If a result shows `[TRUNCATED`,
+   split the request into more calls with fewer files or fewer sections.
 
 ---
 

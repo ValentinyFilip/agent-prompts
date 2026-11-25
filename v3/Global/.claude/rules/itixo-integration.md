@@ -108,9 +108,9 @@ reported by `itixo-investigator`. Reading one known file is permitted.
 Discovery of where a thing is, is not permitted.
 
 The orchestrator still performs: the boot reads of `.steering/` and
-`.agent-local/` (operating contract section 3), the saved script
-`boot-steering` through the sharp-codemode server for those boot reads,
-`.agent-local/` memory updates, the itixo detection check, the pre-delegation
+`.agent-local/` (operating contract section 3), the saved scripts
+`boot-index` and `steering-sections` through the sharp-codemode server for those
+boot reads, `.agent-local/` memory updates, the itixo detection check, the pre-delegation
 contract in `governance-rules.md` section 4, relaying every halt and every
 subagent question to the user, `git status`, and commit proposals. These stay
 with the orchestrator because they are either trivial or because they are the

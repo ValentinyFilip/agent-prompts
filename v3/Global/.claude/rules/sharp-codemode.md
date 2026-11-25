@@ -39,20 +39,18 @@ Names in the tool list have the prefix `mcp__sharp-codemode__`.
 
 ## 3. Orchestrator Rules
 
-1. For the boot reads, I call `run_saved` with the name `boot-steering` before I read
-   any file by hand. The script returns the compressed `.steering/` files,
-   `.agent-local/activeContext.md`, and `.agent-local/sessionProgress.md`. It marks
-   each missing file `absent`.
-2. The boot evidence block stays mandatory. I write it from the script output. A file
-   that is not in the output must not appear in the block.
-3. If the script is missing or fails, I do the boot reads by hand, as before. I report
-   this one time.
-4. If itixo is present, I do not call `execute` or `execute_readonly`. I do not use a
+1. For the boot reads, I run the saved scripts `boot-index` and `steering-sections`,
+   per `CLAUDE.md` section 3.3. They return only the files and sections that the task
+   needs. The boot evidence block stays mandatory. I write it from the script output.
+   If a script is missing or fails, I do the boot reads with `Read` and report this one
+   time. I do not use `boot-steering` for the boot. It returns all files, and the
+   server cuts each result at 20,000 characters.
+2. If itixo is present, I do not call `execute` or `execute_readonly`. I do not use a
    script to locate or to change code. That is delegation work
    (`itixo-integration.md` section 3).
-5. If itixo is absent, I act in the roles of section 4 and section 5 myself, and the
+3. If itixo is absent, I act in the roles of section 4 and section 5 myself, and the
    same tool rules apply to each role.
-6. I use `search` only to learn which saved scripts exist, so that I can name one in a
+4. I use `search` only to learn which saved scripts exist, so that I can name one in a
    delegation prompt.
 
 ---
