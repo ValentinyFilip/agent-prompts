@@ -27,6 +27,10 @@ forward the `v2-claude` rule set and adds optional delegation to the `itixo` plu
 - `language-style.md`, `open-pets.md`, `local-tools.md`, and the `Prompts/` templates
   carry over unchanged. `memory-bank.md` and `governance-rules.md` are updated to
   point at `steering-contract.md` instead of the removed skill.
+- New path-scoped language rules `lang-csharp.md`, `lang-sql.md`, and
+  `lang-markdown.md` under `Global/.claude/rules/`. Each file has `paths:`
+  frontmatter, so Claude Code loads it only for matching files. `CLAUDE.md` does not
+  import them.
 
 ## Itixo Is Optional
 
@@ -49,6 +53,7 @@ This installs:
 - the mandatory operating contract at `.claude/CLAUDE.md`;
 - global rules under `.claude/rules/`, including `itixo-integration.md` and
   `steering-contract.md`.
+- path-scoped language rules `lang-csharp.md`, `lang-sql.md`, and `lang-markdown.md`.
 
 This rule set ships no skills of its own. `steering-contract.md` replaced the
 `/steering-manager` skill; `.steering/`/`.specs/` writes now apply that rule directly.
